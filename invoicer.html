@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/purecss@3.0.0/build/pure-min.css" integrity="sha384-X38yfunGUhNzHpBaEBsWLO+A0HDYOQi8ufWDkZ0k9e0eXz/tH3II7uKZ9msv++Ls" crossorigin="anonymous">
+		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/purecss@3.0.0/build/grids-responsive-min.css" />
+		<style>
+			@media screen, print {body{background:#E7E8E9;-webkit-print-color-adjust:exact !important;print-color-adjust:exact !important;background-image: linear-gradient(315deg, #d3d3d3 0%, #57606f 74%);}.page-wrapper {margin-left: 50px;margin-right:50px;padding-top: 60px;position: relative;-webkit-transition: all 0.4s ease;-ms-transition: all 0.4s ease;transition: all 0.4s ease;}.card { background: #fff;-webkit-box-shadow: 0 0 13px 0 rgba(82, 63, 105, 0.05);box-shadow: 0 0 13px 0 rgba(82, 63, 105, 0.05);margin: 0 0 24px 0;width: 100%;border: 10px;border-radius: 8px;}.custom-bg{background:#fff;}.custom-spacing{margin:0;padding:.35em 0 .75em .75em}table{width: 100%;}.centerText{text-align: center;}.rightText{text-align: right;}.pure-button-remove,.pure-button-selected,a.pure-button-remove,a.pure-button-selected{background-color:#ff3800;color:#fff}}
+		</style>
+		
+	</head>
+	<body>
+		<div class="page-wrapper">
+			<div v-scope>
+			<!-- Start of form section -->
+				<div class="pure-g" v-show="!viewPrintable">
+					<div class="pure-u-1 centerText" ><h1> Invoice Generator</h1></div>
+					<!--<div class="">-->
+						<div class="pure-u-1 pure-u-md-1-2 custom-bg"
+							<legend><h3>Bill From</h3></legend>
+							<form class="pure-form pure-form-aligned">
+								<fieldset>
+									<div class="pure-control-group">
+										<label for="fromCompanyName">Company/Name:</label>
+										<input class="pure-input-1-2" type="text" id="fromCompanyName" v-model="formBasicData.fromCompanyName" />
+									</div>
+									<div class="pure-control-group">
+										<label for="fromAddress">Address:</label>
+										<input class="pure-input-1-2" type="text" id="fromAddress" v-model="formBasicData.fromCompanyAddress" />
+									</div>
+									<div class="pure-control-group">	
+										<label for="fromCity">City:</label>
+										<input class="pure-input-1-2" type="text" id="fromCity" v-model="formBasicData.fromCompanyCity" />
+									</div>
+									<div class="pure-control-group">	
+										<label for="fromState">State:</label>
+										<input class="pure-input-1-2" type="text" id="fromState" v-model="formBasicData.fromCompanyState" />
+									</div>
+									<div class="pure-control-group">	
+										<label for="fromZipCode">Zip Code:</label>
+										<input class="pure-input-1-2" type="text" id="fromZipCode" v-model="formBasicData.fromCompanyZipCode" />
+									</div>
+									<div class="pure-control-group">	
+										<label for="fromCountry">Country:</label>
+										<input class="pure-input-1-2" type="text" id="fromCountry" v-model="formBasicData.fromCompanyCountry" />
+									</div>
+									<div class="pure-control-group">	
+										<label for="fromNotes">Notes:</label>
+										<textarea rows="4" cols="5" class="pure-input-1-2" id="fromNotes" v-model="formBasicData.fromCompanyNotes" placeholder="Enter message"></textarea>
+									</div>
+										
+								</fieldset>
+							</form>
+						</div>
+					
+						<div class="pure-u-1 pure-u-md-1-2 custom-bg">
+							<legend><h3>Bill to</h3></legend>
+							<form class="pure-form pure-form-aligned">
+								<fieldset>
+									<div class="pure-control-group">
+										<label for="toCompanyName">Company/Name:</label>
+										<input class="pure-input-1-2" type="text" id="toCompanyName" v-model="formBasicData.toCompanyName" />
+									</div>	
+									<div class="pure-control-group">	
+										<label for="toAddress">Address:</label>
+										<input class="pure-input-1-2" type="text" id="toAddress" v-model="formBasicData.toCompanyAddress" />
+									</div>	
+									<div class="pure-control-group">	
+										<label for="toCity">City:</label>
+										<input class="pure-input-1-2" type="text" id="toCity" v-model="formBasicData.toCompanyCity" />
+									</div>	
+									<div class="pure-control-group">	
+										<label for="toState">State:</label>
+										<input class="pure-input-1-2" type="text" id="toState" v-model="formBasicData.toCompanyState" />
+									</div>	
+									<div class="pure-control-group">	
+										<label for="toZipCode">Zip Code:</label>
+										<input class="pure-input-1-2" type="text" id="toZipCode" v-model="formBasicData.toCompanyZipCode" />
+									</div>	
+									<div class="pure-control-group">	
+										<label for="toCountry">Country:</label>
+										<input class="pure-input-1-2" type="text" id="toCountry" v-model="formBasicData.toCompanyCountry" />
+									</div>	
+									<div class="pure-control-group">	
+										<label for="toNotes">Notes:</label>
+										<textarea rows="4" cols="5" class="pure-input-1-2" id="toNotes" v-model="formBasicData.toCompanyNotes" placeholder="Enter message"></textarea>
+									</div>
+								</fieldset>
+							</form>
+						</div>
+					<!--</div> -->
+					<hr>
+					<div class="pure-u-1 card">
+						<form class="pure-form pure-form-aligned">
+							<fieldset>
+								<div class="pure-control-group">	
+									<label for="invoiceNumber">Invoice Number:</label>
+									<input class="pure-input-1-4" type="text" id="invoiceNumber" v-model="formBasicData.invoiceNumber" />
+								</div>	
+								<div class="pure-control-group">	
+									<label for="issuedDate">Issued Date:</label>
+									<input type="text" id="issuedDate" v-model="formBasicData.invoiceIssuedDate" placeholder="yyyy-mm-dd"/>
+								</div>	
+								<div class="pure-control-group">	
+									<label for="dueDate">Due Date:</label>
+									<input type="text" id="dueDate" v-model="formBasicData.invoiceDueDate" placeholder="yyyy-mm-dd"/>
+								</div>	
+							</fieldset>
+						</form>
+					</div>
+					<hr>
+					
+					<div class="pure-u-1 card">
+						<form class="pure-form pure-form-aligned" @submit.prevent>
+							<fieldset>
+								<div class="pure-control-group">	
+									<label for="formItemName">Item Name:</label>
+									<input  type="text" id="formItemName" v-model="formItem.name" />
+									<label for="description">Description:</label>
+									<textarea rows="1" cols="20" id="description" v-model="formItem.description" placeholder="Enter message"></textarea>
+								</div>	
+								<div class="pure-control-group">
+									<label for="formQuantity">Quantity:</label>
+									<input  type="number" id="formQuantity" v-model="formItem.quantity" min=0 step=1 required/>
+									<label for="formCostPerItem">Cost Per Item:</label>
+									<input  type="number" id="formCostPerItem" v-model="formItem.cost" min=0 step=0.01 required/>
+								</div>	
+								<div class="pure-control-group">
+									<label><button type="submit" @click="addItem(formItem)" id="addItemButton" class="pure-button pure-button-primary" :disabled="!formItem.name || !formItem.quantity || !formItem.cost">Add</button> </label>
+								</div>
+							</fieldset>
+						</form>
+					</div>
+					
+					<div class="pure-u-1 card" v-show="showForm">
+						<table class="custom-bg pure-table pure-table-bordered">
+						  <thead>
+							<tr>
+							  <th>Name</th>
+							  <th>Description</th>
+							  <th>Qty</th>
+							  <th>Cost Per Item</th>
+							  <th>Remove</th>
+							</tr>
+						  </thead>
+						  <tbody>
+							<tr v-for="(item, index) in getInvoiceItems" :key="item.name">
+								<td>{{item.name}}</td>
+								<td>{{item.description}}</td>
+								<td>{{item.quantity}}</td>
+								<td>{{item.cost}}</td>
+								<td><button class="pure-button pure-button-remove" type="submit" @click="removeItem(index)" id="removeItemButton" class="pure-button pure-button-error" >Remove</button></td>
+							</tr>
+						  </tbody>
+						</table>
+					</div>
+					
+					<div class="pure-u-1 pure-u-md-1-2 custom-bg">
+						<form class="pure-form pure-form-aligned">
+							<fieldset>
+								<div class="pure-control-group">	
+									<label for="subtotal">Subtotal:</label>
+									<label id="subtotal">{{chosenCurrency}} : {{addSubtotal}}</label>
+								</div>	
+								<div class="pure-control-group">	
+									<label for="tax">Include Tax %:</label>
+									<input v-show="taxSelectchecked" type="number" id="tax" v-model="taxValue" min=0 max=100/>
+									<input type="checkbox" v-model="taxSelectchecked"></input>
+								</div>	
+								<div class="pure-control-group">	
+									<label for="discount">Discount %:</label>
+									<input  type="number" id="discount" v-model="discountPercent" min=0 max=100/>
+									
+								</div>
+								<div class="pure-control-group">	
+									<label for="shipping">Shipping:</label>
+									<input  type="number" id="shipping" v-model="shippingCost" min=0 max=100000/>
+									
+								</div>	
+								<div class="pure-control-group">	
+									<label for="total">Total:</label>
+									<label for="total">{{chosenCurrency}} : {{addTotal}}</label>
+								</div>
+							</fieldset>
+						</form>
+					</div>
+					<div class="pure-u-1 pure-u-md-1-2 custom-bg">
+						<form class="pure-form pure-form-aligned">
+							<fieldset>
+								<div class="pure-control-group">	
+									<label for="currency">Select Currency:</label>
+									<select id="currency" v-model="chosenCurrency" >
+										<option value="AED">AED - UAE Dirham</option>
+										<option value="AFN">AFN - Afghani</option>
+										<option value="ALL">ALL - Lek</option>
+										<option value="AMD">AMD - Armenian Dram</option>
+										<option value="ANG">ANG - Netherlands Antillean Guilder</option>
+										<option value="AOA">AOA - Kwanza</option>
+										<option value="ARS">ARS - Argentine Peso</option>
+										<option value="AUD">AUD - Australian Dollar</option>
+										<option value="AWG">AWG - Aruban Florin</option>
+										<option value="AZN">AZN - Azerbaijanian Manat</option>
+										<option value="BAM">BAM - Convertible Mark</option>
+										<option value="BBD">BBD - Barbados Dollar</option>
+										<option value="BDT">BDT - Taka</option>
+										<option value="BGN">BGN - Bulgarian Lev</option>
+										<option value="BHD">BHD - Bahraini Dinar</option>
+										<option value="BIF">BIF - Burundi Franc</option>
+										<option value="BMD">BMD - Bermudian Dollar</option>
+										<option value="BND">BND - Brunei Dollar</option>
+										<option value="BOB">BOB - Boliviano</option>
+										<option value="BRL">BRL - Brazilian Real</option>
+										<option value="BSD">BSD - Bahamian Dollar</option>
+										<option value="BWP">BWP - Pula</option>
+										<option value="BYR">BYR - Belarussian Ruble</option>
+										<option value="BZD">BZD - Belize Dollar</option>
+										<option value="CAD">CAD - Canadian Dollar</option>
+										<option value="CHF">CHF - Swiss Franc</option>
+										<option value="CLP">CLP - Chilean Peso</option>
+										<option value="CNY">CNY - Yuan Renminbi</option>
+										<option value="COP">COP - Colombian Peso</option>
+										<option value="CRC">CRC - Costa Rican Colon</option>
+										<option value="CUP">CUP - Cuban Peso</option>
+										<option value="CVE">CVE - Cabo Verde Escudo</option>
+										<option value="CZK">CZK - Czech Koruna</option>
+										<option value="DJF">DJF - Djibouti Franc</option>
+										<option value="DKK">DKK - Danish Krone</option>
+										<option value="DOP">DOP - Dominican Peso</option>
+										<option value="DZD">DZD - Algerian Dinar</option>
+										<option value="EGP">EGP - Egyptian Pound</option>
+										<option value="ERN">ERN - Nakfa</option>
+										<option value="ETB">ETB - Ethiopian Birr</option>
+										<option value="EUR">EUR - Euro</option>
+										<option value="FJD">FJD - Fiji Dollar</option>
+										<option value="FKP">FKP - Falkland Islands Pound</option>
+										<option value="GBP">GBP - Pound Sterling</option>
+										<option value="GEL">GEL - Lari</option>
+										<option value="GHS">GHS - Ghana Cedi</option>
+										<option value="GIP">GIP - Gibraltar Pound</option>
+										<option value="GMD">GMD - Dalasi</option>
+										<option value="GNF">GNF - Guinea Franc</option>
+										<option value="GTQ">GTQ - Quetzal</option>
+										<option value="GYD">GYD - Guyana Dollar</option>
+										<option value="HKD">HKD - Hong Kong Dollar</option>
+										<option value="HNL">HNL - Lempira</option>
+										<option value="HRK">HRK - Croatian Kuna</option>
+										<option value="HUF">HUF - Forint</option>
+										<option value="IDR">IDR - Rupiah</option>
+										<option value="ILS">ILS - New Israeli Sheqel</option>
+										<option value="INR">INR - Indian Rupee</option>
+										<option value="IQD">IQD - Iraqi Dinar</option>
+										<option value="IRR">IRR - Iranian Rial</option>
+										<option value="ISK">ISK - Iceland Krona</option>
+										<option value="JMD">JMD - Jamaican Dollar</option>
+										<option value="JOD">JOD - Jordanian Dinar</option>
+										<option value="JPY">JPY - Yen</option>
+										<option value="KES">KES - Kenyan Shilling</option>
+										<option value="KGS">KGS - Som</option>
+										<option value="KHR">KHR - Riel</option>
+										<option value="KMF">KMF - Comoro Franc</option>
+										<option value="KPW">KPW - North Korean Won</option>
+										<option value="KRW">KRW - Won</option>
+										<option value="KWD">KWD - Kuwaiti Dinar</option>
+										<option value="KYD">KYD - Cayman Islands Dollar</option>
+										<option value="KZT">KZT - Tenge</option>
+										<option value="LAK">LAK - Kip</option>
+										<option value="LBP">LBP - Lebanese Pound</option>
+										<option value="LKR">LKR - Sri Lanka Rupee</option>
+										<option value="LRD">LRD - Liberian Dollar</option>
+										<option value="LYD">LYD - Libyan Dinar</option>
+										<option value="MAD">MAD - Moroccan Dirham</option>
+										<option value="MDL">MDL - Moldovan Leu</option>
+										<option value="MGA">MGA - Malagasy Ariary</option>
+										<option value="MKD">MKD - Denar</option>
+										<option value="MMK">MMK - Kyat</option>
+										<option value="MNT">MNT - Tugrik</option>
+										<option value="MOP">MOP - Pataca</option>
+										<option value="MRO">MRO - Ouguiya</option>
+										<option value="MUR">MUR - Mauritius Rupee</option>
+										<option value="MVR">MVR - Rufiyaa</option>
+										<option value="MWK">MWK - Kwacha</option>
+										<option value="MXN">MXN - Mexican Peso</option>
+										<option value="MYR">MYR - Malaysian Ringgit</option>
+										<option value="MZN">MZN - Mozambique Metical</option>
+										<option value="NGN">NGN - Naira</option>
+										<option value="NIO">NIO - Cordoba Oro</option>
+										<option value="NOK">NOK - Norwegian Krone</option>
+										<option value="NPR">NPR - Nepalese Rupee</option>
+										<option value="NZD">NZD - New Zealand Dollar</option>
+										<option value="OMR">OMR - Rial Omani</option>
+										<option value="PEN">PEN - Nuevo Sol</option>
+										<option value="PGK">PGK - Kina</option>
+										<option value="PHP">PHP - Philippine Peso</option>
+										<option value="PKR">PKR - Pakistan Rupee</option>
+										<option value="PLN">PLN - Zloty</option>
+										<option value="PYG">PYG - Guarani</option>
+										<option value="QAR">QAR - Qatari Rial</option>
+										<option value="RON">RON - New Romanian Leu</option>
+										<option value="RSD">RSD - Serbian Dinar</option>
+										<option value="RUB">RUB - Russian Ruble</option>
+										<option value="RWF">RWF - Rwanda Franc</option>
+										<option value="SAR">SAR - Saudi Riyal</option>
+										<option value="SBD">SBD - Solomon Islands Dollar</option>
+										<option value="SCR">SCR - Seychelles Rupee</option>
+										<option value="SDG">SDG - Sudanese Pound</option>
+										<option value="SEK">SEK - Swedish Krona</option>
+										<option value="SGD">SGD - Singapore Dollar</option>
+										<option value="SHP">SHP - Saint Helena Pound</option>
+										<option value="SLL">SLL - Leone</option>
+										<option value="SOS">SOS - Somali Shilling</option>
+										<option value="SRD">SRD - Surinam Dollar</option>
+										<option value="SSP">SSP - South Sudanese Pound</option>
+										<option value="STD">STD - Dobra</option>
+										<option value="SYP">SYP - Syrian Pound</option>
+										<option value="SZL">SZL - Lilangeni</option>
+										<option value="THB">THB - Baht</option>
+										<option value="TJS">TJS - Somoni</option>
+										<option value="TMT">TMT - Turkmenistan New Manat</option>
+										<option value="TND">TND - Tunisian Dinar</option>
+										<option value="TOP">TOP - Pa’anga</option>
+										<option value="TRY">TRY - Turkish Lira</option>
+										<option value="TTD">TTD - Trinidad and Tobago Dollar</option>
+										<option value="TWD">TWD - New Taiwan Dollar</option>
+										<option value="TZS">TZS - Tanzanian Shilling</option>
+										<option value="UAH">UAH - Hryvnia</option>
+										<option value="UGX">UGX - Uganda Shilling</option>
+										<option value="USD">USD - US Dollar</option>
+										<option value="UYU">UYU - Peso Uruguayo</option>
+										<option value="UZS">UZS - Uzbekistan Sum</option>
+										<option value="VEF">VEF - Bolivar</option>
+										<option value="VND">VND - Dong</option>
+										<option value="VUV">VUV - Vatu</option>
+										<option value="WST">WST - Tala</option>
+										<option value="XAF">XAF - CFA Franc BEAC</option>
+										<option value="XCD">XCD - East Caribbean Dollar</option>
+										<option value="XOF">XOF - CFA Franc BCEAO</option>
+										<option value="XPF">XPF - CFP Franc</option>
+										<option value="YER">YER - Yemeni Rial</option>
+										<option value="ZAR">ZAR - Rand</option>
+										<option value="ZMW">ZMW - Zambian Kwacha</option>
+										<option value="ZWL">ZWL - Zimbabwe Dollar</option>
+									</select>
+								</div>
+							</fieldset>
+						</form>
+					</div>
+					<div class="pure-u-1 custom-bg">
+						<form class="pure-form pure-form-aligned" @submit.prevent>
+							<div class="pure-control-group">
+								<label><button type="submit" @click="showPrintableForm()" id="removeItemButton" class="pure-button pure-button-primary" >Print Invoice</button></label>		
+							</div>
+						</form>
+					</div>
+				</div>
+			<!-- End form section -->
+			
+			<!-- Start print view for form section -->
+				<div class="pure-g" v-show="viewPrintable">
+					<div class="pure-u-1 custom-bg"><h2> Invoice : {{formBasicData.invoiceNumber}}</h2><h3> Issued Date: {{formBasicData.invoiceIssuedDate}} </h3> <h3>Due Date: {{formBasicData.invoiceDueDate}}</h3></div>
+					
+					
+					<table class="custom-bg pure-table">
+						<thead>
+							<tr>
+							  <th>Bill From</th>
+							  <th>Bill To</th>
+							</tr>
+						  </thead>
+						  <tbody>
+							<tr>
+								<td>{{formBasicData.fromCompanyName}}</td>
+								<td>{{formBasicData.toCompanyName}}</td>
+							</tr>
+							<tr>
+								<td>{{formBasicData.fromCompanyAddress}}</td>
+								<td>{{formBasicData.toCompanyAddress}}</td>
+							</tr>
+							<tr>
+								<td>{{formBasicData.fromCompanyCity}}, {{formBasicData.fromCompanyState}}, {{formBasicData.fromCompanyZipCode}}, {{formBasicData.fromCompanyCountry}}</td>
+								<td>{{formBasicData.toCompanyCity}}, {{formBasicData.toCompanyState}}, {{formBasicData.toCompanyZipCode}}, {{formBasicData.toCompanyCountry}}</td>
+							</tr>
+							<tr>
+								<td>{{formBasicData.fromCompanyNotes}}</td>
+								<td>{{formBasicData.toCompanyNotes}}</td>
+							</tr>
+						  </tbody>
+					</table>
+				</div>
+				<div v-show="viewPrintable">
+					<div class="pure-u-1 custom-bg"><h4> Items </h4></div>
+				
+					<table class="custom-bg pure-table pure-table-bordered">
+						  <thead>
+							<tr>
+							  <th>Name</th>
+							  <th>Description</th>
+							  <th>Qty</th>
+							  <th>Cost Per Item</th>
+							  <th>Total</th>
+							</tr>
+						  </thead>
+						  <tbody>
+							<tr v-for="item in invoiceItems">
+							  <td>{{item.name}}</td>
+							  <td>{{item.description}}</td>
+							  <td>{{item.quantity}}</td>
+							  <td>{{item.cost}}</td>
+							  <td>{{item.cost * item.quantity}}</td>
+							</tr>
+							<tr>
+							  <td colspan="4"></td>
+							  <td>
+								<b>Subtotal - {{chosenCurrency}}</b>: {{formTally.addSubtotal}} <br /><br />
+								<b>Tax </b>: {{formTally.percentTax}} %<br /><br />
+								<b>Discount </b>: {{formTally.discountPercent}} %<br /><br />
+								<b>Shipping - {{chosenCurrency}}</b>: {{formTally.shippingCost}}<br /><br />
+								<b>Total - {{chosenCurrency}}</b>: {{addTotal}}<br />
+							  </td>
+							</tr>
+						  </tbody>
+					</table>
+				</div>
+			<!-- End printable view for form section -->
+			</div>
+		</div>
+
+		
+		<script src="https://unpkg.com/petite-vue@0.2.2/dist/petite-vue.iife.js"></script>
+		<script>
+			PetiteVue
+			.createApp({
+				viewPrintable: false,
+				calcSubtotal: 0,
+				chosenCurrency:"USD",
+				formItem:{
+					name: null,
+					description: null,
+				},
+				invoiceItems:[],
+				taxSelectchecked: false,
+				formBasicData:{
+					fromCompanyName: null,
+					fromCompanyAddress: null,
+					fromCompanyCity: null,
+					fromCompanyState: null,
+					fromCompanyZipCode: null,
+					fromCompanyCountry: null,
+					fromCompanyNotes: null,
+					toCompanyName: null,
+					toCompanyAddress: null,
+					toCompanyCity: null,
+					toCompanyState: null,
+					toCompanyZipCode: null,
+					toCompanyCountry: null,
+					toCompanyNotes: null,
+					invoiceNumber: null,
+					invoiceIssuedDate: null,
+					invoiceDueDate: null,
+				},
+				formTally: [],
+				taxValue: 0,
+				discountPercent: 0,
+				shippingCost:0,
+				get addSubtotal(){
+					this.formTally["addSubtotal"] = parseFloat(this.calcSubtotal).toFixed(2);
+					return parseFloat(this.calcSubtotal).toFixed(2);
+				},
+				get addTotal(){
+					let finalvalue = 0;
+					if(this.taxValue != 0 && this.taxSelectchecked){
+						if(this.discountPercent != 0){
+							this.formTally["discountPercent"] = this.discountPercent;
+							this.finalvalue = (this.calcSubtotal * (1 - (this.discountPercent/100)) ) * (1 + ( this.taxValue/100)) + this.shippingCost;
+						}
+						else{
+							
+							this.finalvalue = this.calcSubtotal * (1 + ( this.taxValue/100)) + this.shippingCost;
+						}
+						this.formTally["percentTax"] = this.taxValue;
+						this.formTally["shippingCost"] = this.shippingCost;
+						this.formTally["addTotal"] = parseFloat(this.finalvalue).toFixed(2);
+						return parseFloat(this.finalvalue).toFixed(2);
+						
+					}else{
+						this.formTally["percentTax"] = this.taxValue;
+						
+						if(this.discountPercent != 0){
+							this.finalvalue = this.calcSubtotal * (1 - (this.discountPercent/100)) + this.shippingCost;
+							this.formTally["addTotal"] = parseFloat(this.finalvalue).toFixed(2);
+							this.formTally["discountPercent"] = this.discountPercent;
+							this.formTally["shippingCost"] = this.shippingCost;
+							return parseFloat(this.finalvalue).toFixed(2);
+						}else{
+							this.formTally["addTotal"] = parseFloat(this.finalvalue).toFixed(2);
+							this.formTally["discountPercent"] = 0
+							this.formTally["shippingCost"] = this.shippingCost;
+							return parseFloat(this.calcSubtotal + this.shippingCost).toFixed(2);
+						}
+					}
+				},
+				addItem(items){
+					const newItem = { ...items};
+					this.invoiceItems.push(newItem);
+					this.calcSubtotal = this.calcSubtotal + (newItem.quantity * newItem.cost);
+					this.formItem = {
+						name: null,
+						description: null,
+					};
+				},
+				removeItem(itemIndex){
+					this.calcSubtotal = this.calcSubtotal - (this.invoiceItems[itemIndex].quantity * this.invoiceItems[itemIndex].cost);
+					this.invoiceItems.splice(itemIndex, 1);
+				},
+				get showForm(){
+					if(this.invoiceItems.length != 0){
+						return true;
+					}
+				},
+				get getInvoiceItems(){
+					return this.invoiceItems;
+				},
+				showPrintableForm(){
+					this.viewPrintable = true;
+				}
+			}).mount()
+		</script>
+	</body>
+</html>
