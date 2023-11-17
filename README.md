@@ -1,5 +1,5 @@
 # Invoice Generating Application
-Single Page invoicer application made with html, petite-vue, purecss
+Single Page invoice generation application made with html, petite-vue, purecss
 
 ## Why was this created
 Spent sometime searching for a simple free way to create/ generate an invoice and could not find anything that didn't require me to sign up or pay.
